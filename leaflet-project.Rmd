@@ -1,0 +1,53 @@
+---
+title: "Leaflet Project"
+author: "Andrey Ivanov"
+date: "19 04 2020"
+output: html_document
+---
+
+## Russian Cities
+```{r, echo=TRUE}
+library(dplyr)
+cities <- read.csv("ru.csv")
+
+#cities <- as_tibble(cities)
+cities <- cities %>% 
+      filter(!is.na(population) & population > 0 ) %>%
+      mutate(capital = if_else(capital == "", "minor", as.character(capital))) %>%
+      mutate(color = if_else(capital == "primary", "red", 
+                             if_else(capital == "admin", "blue", "green"))) %>%
+      select(name = city, lat, lng, capital, population, color)
+cities <- as.data.frame(cities)
+head(cities)
+```
+
+```{r, echo=TRUE}
+library(leaflet)
+cities %>% 
+  leaflet() %>%
+  addTiles() %>%
+  addCircles(weight = 5, radius = sqrt(cities$population) * 10, 
+             color = cities$color, popup = paste("City: ", cities$name, "<br>", 
+                                                 "Population: ", cities$population)) %>%
+  addLegend(labels = c("Capital", "Administrative Centers", "Minor Cities"), 
+            colors = c("red","blue","green"))
+  
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
