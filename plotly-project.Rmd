@@ -1,0 +1,80 @@
+---
+title: "Plotly Project: 3D "
+author: "Andrey Ivanov"
+date: "20 04 2020"
+output: ioslides_presentation
+---
+
+## Ripple
+
+```{r, echo=FALSE, message=FALSE}
+library(plotly)
+library(sfsmisc)
+```
+
+```{r, echo=FALSE}
+x <- seq(-1, 1, 0.01)
+y <- seq(-1, 1, 0.01)
+xy <- xy.grid(x,y)
+df <- as.data.frame(xy)
+names(df) <- c("x","y")
+```
+
+```{r, echo=FALSE}
+ripple <- matrix(sin(10*(df$x^2 + df$y^2))/10, nrow = 201, ncol = 201)
+plot_ly(z = ripple, type = "surface")
+
+```
+
+## Torus
+
+```{r, echo=FALSE}
+torus <- matrix((0.4^2-(0.6-(df$x^2 + df$y^2)^0.5)^2)^0.5, nrow = 201, ncol = 201)
+plot_ly(z = torus, type = "surface")
+
+```
+
+## Bumps
+
+```{r, echo=FALSE}
+bumps <- matrix(sin(5*df$x)*cos(5*df$y)/5, nrow = 201, ncol = 201)
+plot_ly(z = bumps, type = "surface")
+
+```
+
+## Cone
+
+```{r, echo=FALSE}
+cone <- matrix((df$x^2 + df$y^2)^0.5, nrow = 201, ncol = 201)
+plot_ly(z = cone, type = "surface")
+
+```
+
+## Intersecting Fences
+
+```{r, echo=FALSE}
+fences <- matrix(.75/exp((df$x*5)^2 * (df$y*5)^2), nrow = 201, ncol = 201)
+plot_ly(z = fences, type = "surface")
+
+```
+
+
+## Tube
+
+```{r, echo=FALSE}
+x <- c(seq(-1, -0.1, 0.01), seq(0.1, 1, 0.01))
+y <- c(seq(-1, -0.1, 0.01), seq(0.1, 1, 0.01))
+xy <- xy.grid(x,y)
+df <- as.data.frame(xy)
+names(df) <- c("x","y")
+
+tube <- matrix(1/(15*(df$x^2 + df$y^2)), nrow = 182, ncol = 182)
+plot_ly(z = tube, type = "surface")
+
+```
+
+
+
+
+
+
